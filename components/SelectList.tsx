@@ -223,12 +223,19 @@ const SelectList: React.FC<SelectListProps> =  ({
                                                 <Text style={[{fontFamily},dropdownTextStyles]}>{value}</Text>
                                             </TouchableOpacity>
                                             {
-                                                (indexOfSelected === index) ? 
+                                                (indexOfSelected === index) ?
+                                                <TouchableOpacity onPress={()=>{
+                                                    setSelected(undefined)
+                                                    setIndexOfSelected(undefined)
+                                                    setSelectedVal("")
+                                                    slideup()
+                                                    setTimeout(() => setFilteredData(data), 800)
+                                                }}> 
                                                 <Image 
                                             source={require('../assets/images/close.png')}
                                             resizeMode='contain'
                                             style={{width:17,height:17,marginRight:5, alignSelf: "center"}}
-                                        /> : <></>
+                                        /></TouchableOpacity> : <></>
                                             }
                                         </View>
                                         )

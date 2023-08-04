@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View,
+   // View,
     Text,
     StyleSheet,
     Image,
@@ -9,6 +9,7 @@ import {
     Animated,
     TextInput,
 } from 'react-native';
+import { Input, HStack, View } from 'native-base';
 
 import { SelectListProps } from '..';
 
@@ -34,6 +35,7 @@ const SelectList: React.FC<SelectListProps> =  ({
         disabledItemStyles,
         disabledTextStyles,
         onSelect = () => {},
+        onClose = () => {},
         save = 'key',
         dropdownShown = false,
         fontFamily
@@ -122,8 +124,8 @@ const SelectList: React.FC<SelectListProps> =  ({
             {
                 (dropdown && search)
                 ?
-                    <View style={[styles.wrapper,boxStyles]}>
-                        <View style={{flexDirection:'row',alignItems:'center',flex:1}}> 
+                    <View style={[styles.wrapper,boxStyles,{overflow:"hidden"} ]}>
+                        <HStack style={{flexGrow:1, alignItems:"center" }}> 
                             {
                                 (!searchicon)
                                 ?
@@ -135,8 +137,8 @@ const SelectList: React.FC<SelectListProps> =  ({
                                 :
                                 searchicon
                             }
-                        
-                            <TextInput 
+                        <View style={{flex:1}}>
+                            <Input 
                                 placeholder={searchPlaceholder}
                                 onChangeText={(val) => {
                                     let result =  data.filter((item: L1Keys) => {
@@ -146,9 +148,11 @@ const SelectList: React.FC<SelectListProps> =  ({
                                     });
                                     setFilteredData(result)
                                 }}
-                                style={[{padding:0,height:20,flex:1,fontFamily},inputStyles]}
+                                style={[{padding:1,height:20,fontFamily},inputStyles]}
                             />
-                                <TouchableOpacity onPress={() => slideup()} >
+                            </View>
+                                <TouchableOpacity onPress={() => {slideup();
+                                onClose();}} >
 
                                 {
                                     (!closeicon)
@@ -165,7 +169,7 @@ const SelectList: React.FC<SelectListProps> =  ({
                                 </TouchableOpacity>
                                 
                            
-                        </View>
+                        </HStack>
                         
                     </View>
                 :

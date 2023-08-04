@@ -4,7 +4,7 @@
 
 <br>
 <h1 align="center">
-  ⭐ React Native Dropdown Select List </h1>
+  ⭐ New React Native Dropdown Select List </h1>
 
 <div align="center">
 

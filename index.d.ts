@@ -79,6 +79,11 @@ export interface SelectListProps  {
     onSelect?: () => void,
 
     /**
+    * Pass any JSX to this prop like Text, Image or Icon to show instead of textinput
+    */
+    textinput?: JSX.Element,
+
+    /**
     * set fontFamily of whole component Text 
     */
     fontFamily?: string,

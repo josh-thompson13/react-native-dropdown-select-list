@@ -46,6 +46,7 @@ const SelectList: React.FC<SelectListProps> =  ({
     const [height,setHeight] = React.useState<number>(200)
     const animatedvalue = React.useRef(new Animated.Value(0)).current;
     const [filtereddata,setFilteredData] = React.useState(data)
+    const [indexOfSelected, setIndexOfSelected] = React.useState<number | undefined>(undefined);
 
 
     const slidedown = () => {
@@ -134,7 +135,7 @@ const SelectList: React.FC<SelectListProps> =  ({
                                 :
                                 searchicon
                             }
-                            
+                        
                             <TextInput 
                                 placeholder={searchPlaceholder}
                                 onChangeText={(val) => {
@@ -206,13 +207,14 @@ const SelectList: React.FC<SelectListProps> =  ({
                                         )
                                     }else{
                                         return(
-                                            <TouchableOpacity style={[styles.option,dropdownItemStyles]} key={index} onPress={ () => {
+                                            <View key={index} style={{flexDirection: "row"}}>
+                                            <TouchableOpacity style={[styles.option,dropdownItemStyles, {flexGrow: 1}]} key={index} onPress={ () => {
                                                 if(save === 'value'){
                                                     setSelected(value);
                                                 }else{
                                                     setSelected(key)
                                                 }
-                                                
+                                                setIndexOfSelected(index);
                                                 setSelectedVal(value)
                                                 slideup()
                                                 setTimeout(() => {setFilteredData(data)}, 800)
@@ -220,6 +222,15 @@ const SelectList: React.FC<SelectListProps> =  ({
                                             }}>
                                                 <Text style={[{fontFamily},dropdownTextStyles]}>{value}</Text>
                                             </TouchableOpacity>
+                                            {
+                                                (indexOfSelected === index) ? 
+                                                <Image 
+                                            source={require('../assets/images/close.png')}
+                                            resizeMode='contain'
+                                            style={{width:17,height:17,marginRight:5, alignSelf: "center"}}
+                                        /> : <></>
+                                            }
+                                        </View>
                                         )
                                     }
                                     

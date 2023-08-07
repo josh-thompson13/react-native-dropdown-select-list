@@ -19,6 +19,11 @@ export interface SelectListProps  {
     boxStyles?: ViewStyle,
 
     /**
+    * Editablity toggle
+    */
+    editable?: boolean,
+
+    /**
     *  	Additional styles for text of select box
     */
     inputStyles?: TextStyle,
@@ -63,6 +68,15 @@ export interface SelectListProps  {
     */
     arrowicon?: JSX.Element,
 
+    parentCodeValue?: string
+
+
+
+    /**
+     * Pass any JSX to this prop like Text, Image or Icon to show instead of textinput
+    */
+    textinput?: JSX.Element,
+
     /**
     * set to false if you dont want to use search functionality
     */
@@ -79,9 +93,9 @@ export interface SelectListProps  {
     onSelect?: () => void,
 
     /**
-    * Pass any JSX to this prop like Text, Image or Icon to show instead of textinput
+    * Trigger an action when dropdown closed
     */
-    textinput?: JSX.Element,
+    onClose?: () => void,
 
     /**
     * set fontFamily of whole component Text 
@@ -262,6 +276,7 @@ export interface MultipleSelectListProps  {
     * Additional styles for label
     */
     labelStyles?: TextStyle,
+
 }
 
 declare class MultipleSelectList extends React.Component<MultipleSelectListProps> {}

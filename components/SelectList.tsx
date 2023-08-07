@@ -15,6 +15,7 @@ type L1Keys = { key?: any; value?: any; disabled?: boolean | undefined };
 
 const SelectList: React.FC<SelectListProps> = ({
   setSelected,
+  resetChild,
   placeholder,
   boxStyles,
   inputStyles,
@@ -68,7 +69,17 @@ const SelectList: React.FC<SelectListProps> = ({
   };
 
   React.useEffect(() => {
-    setSelectedVal("");
+    if(defaultOption){
+        setIndexOfSelected(defaultOption.key);
+    }
+    return;
+  },[])
+
+  React.useEffect(() => {
+    if(!_firstRender){
+        setSelectedVal("");
+        resetChild();
+    }
   }, [parentCodeValue]);
 
   React.useEffect(() => {
@@ -95,12 +106,12 @@ const SelectList: React.FC<SelectListProps> = ({
     ) {
       // oldOption.current != null
       oldOption.current = defaultOption.key;
-      setSelected(defaultOption.key);
+      // setSelected(defaultOption.key);
       setSelectedVal(defaultOption.value);
     }
     if (defaultOption && _firstRender && defaultOption.key != undefined) {
       oldOption.current = defaultOption.key;
-      setSelected(defaultOption.key);
+      // setSelected(defaultOption.key);
       setSelectedVal(defaultOption.value);
     }
   }, [defaultOption]);
@@ -250,10 +261,11 @@ const SelectList: React.FC<SelectListProps> = ({
                           {value}
                         </Text>
                       </TouchableOpacity>
-                      {indexOfSelected === index ? (
+                      {indexOfSelected === index   ? (
                         <TouchableOpacity
                           onPress={() => {
-                            setSelected(undefined);
+                            resetChild();
+                            console.log("changed");
                             setIndexOfSelected(undefined);
                             setSelectedVal("");
                             slideup();

@@ -9,6 +9,14 @@ export interface SelectListProps  {
     setSelected: Function,
 
     /**
+    * Fn to reset child value but not initiate a fireHlxEvent.
+    */
+    resetChild: Function,
+
+
+   
+
+    /**
     * Placeholder text that will be displayed in the select box
     */
     placeholder?: string,

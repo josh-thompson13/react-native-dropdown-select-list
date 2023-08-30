@@ -64,7 +64,7 @@ export interface SelectListProps  {
     /**
     * The default option of the select list
     */
-    defaultOption?: { key: any, value: any },
+    defaultOption?: { key: any, value: any, label: any },
 
     /**
     * Pass any JSX to this prop like Text, Image or Icon to show instead of search icon

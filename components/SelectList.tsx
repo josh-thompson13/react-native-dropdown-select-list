@@ -11,7 +11,7 @@ import { Input, HStack, View } from "native-base";
 
 import { SelectListProps } from "..";
 
-type L1Keys = { key?: any; value?: any; disabled?: boolean | undefined };
+type L1Keys = { key?: any; value?: any; disabled?: boolean | undefined, label?: any };
 
 const SelectList: React.FC<SelectListProps> = ({
   setSelected,
@@ -74,7 +74,7 @@ const SelectList: React.FC<SelectListProps> = ({
     }
     return;
   },[])
-
+        
   React.useEffect(() => {
     if(!_firstRender){
         setSelectedVal("");
@@ -89,7 +89,7 @@ const SelectList: React.FC<SelectListProps> = ({
   React.useEffect(() => {
     setFilteredData(data);
   }, [data]);
-
+            
   React.useEffect(() => {
     if (_firstRender) {
       _setFirstRender(false);
@@ -107,12 +107,12 @@ const SelectList: React.FC<SelectListProps> = ({
       // oldOption.current != null
       oldOption.current = defaultOption.key;
       // setSelected(defaultOption.key);
-      setSelectedVal(defaultOption.value);
+      setSelectedVal(defaultOption.label);
     }
     if (defaultOption && _firstRender && defaultOption.key != undefined) {
       oldOption.current = defaultOption.key;
       // setSelected(defaultOption.key);
-      setSelectedVal(defaultOption.value);
+      setSelectedVal(defaultOption.label);
     }
   }, [defaultOption]);
 
@@ -139,6 +139,8 @@ const SelectList: React.FC<SelectListProps> = ({
             )}
             <View style={{ flex: 1 }}>
               <Input
+                // borderWidth={0}
+                variant={"unstyled"}
                 placeholder={searchPlaceholder}
                 onChangeText={(val) => {
                   let result = data.filter((item: L1Keys) => {
@@ -148,6 +150,7 @@ const SelectList: React.FC<SelectListProps> = ({
                   });
                   setFilteredData(result);
                 }}
+                numberOfLines={1}
                 style={[{ padding: 1, height: 20, fontFamily }, inputStyles]}
               />
             </View>
@@ -161,7 +164,7 @@ const SelectList: React.FC<SelectListProps> = ({
                 <Image
                   source={require("../assets/images/close.png")}
                   resizeMode="contain"
-                  style={{ width: 17, height: 17 }}
+                  style={{ width: 15, height: 15 }}
                 />
               ) : (
                 closeicon
@@ -180,7 +183,7 @@ const SelectList: React.FC<SelectListProps> = ({
             }
           }}
         >
-          <Text style={[{ fontFamily }, inputStyles]}>
+          <Text style={[{ fontFamily }, inputStyles]} numberOfLines={1}>
             {selectedval == ""
               ? placeholder
                 ? placeholder
@@ -208,78 +211,60 @@ const SelectList: React.FC<SelectListProps> = ({
           ]}
         >
           <ScrollView
-            contentContainerStyle={{ paddingVertical: 10, overflow: "scroll" }}
             nestedScrollEnabled={true}
           >
             {filtereddata.length >= 1 ? (
-              filtereddata.map((item: L1Keys, index: number) => {
+              filtereddata.map((item: L1Keys) => {
                 let key = item.key ?? item.value ?? item;
-                let value = item.value ?? item;
-                let disabled = item.disabled ?? false;
-                if (disabled) {
+                let label = item.label ?? "";
+                let value = item.value ?? "";
                   return (
-                    <TouchableOpacity
-                      style={[styles.disabledoption, disabledItemStyles]}
-                      key={index}
-                      onPress={() => {}}
-                    >
-                      <Text
-                        style={[
-                          { color: "#c4c5c6", fontFamily },
-                          disabledTextStyles,
-                        ]}
-                      >
-                        {value}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                } else {
-                  return (
-                    <View key={index} style={{ flexDirection: "row" }}>
+                    <View key={item.key} style={{ flexDirection: "row", borderColor: "#d3d3d3", borderBottomWidth:1 }}>
                       <TouchableOpacity
                         style={[
                           styles.option,
                           dropdownItemStyles,
-                          { flexGrow: 1 },
+                          {flex: 11}
+                          // { flexGrow: 1 },
                         ]}
-                        key={index}
+                        key={item.key}
                         onPress={() => {
                           if (save === "value") {
                             setSelected(value);
                           } else {
                             setSelected(key);
                           }
-                          setIndexOfSelected(index);
-                          setSelectedVal(value);
+                          setIndexOfSelected(item.key);
+                          setSelectedVal(label);
                           slideup();
                           setTimeout(() => {
                             setFilteredData(data);
                           }, 800);
                         }}
                       >
-                        <Text style={[{ fontFamily }, dropdownTextStyles]}>
-                          {value}
+                        <Text style={[{ fontFamily }, dropdownTextStyles]} numberOfLines={1} >
+                          {label}
                         </Text>
                       </TouchableOpacity>
-                      {indexOfSelected === index   ? (
+                      {indexOfSelected === item.key   ? (
                         <TouchableOpacity
                           onPress={() => {
                             resetChild();
-                            console.log("changed");
                             setIndexOfSelected(undefined);
                             setSelectedVal("");
                             slideup();
                             setTimeout(() => setFilteredData(data), 800);
                           }}
-                          style={{ alignSelf: "center" }}
+                          style={{ alignSelf: "center", flex:1 }}
                         >
                           <Image
                             source={require("../assets/images/close.png")}
                             resizeMode="contain"
                             style={{
-                              width: 17,
-                              height: 17,
+                              width: 13,
+                              height: 13,
                               marginRight: 5,
+                              alignSelf: "flex-end"
                             }}
                           />
                         </TouchableOpacity>
@@ -288,7 +273,7 @@ const SelectList: React.FC<SelectListProps> = ({
                       )}
                     </View>
                   );
-                }
+                
               })
             ) : (
               <TouchableOpacity
@@ -328,10 +313,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "gray",
-    marginTop: 10,
     overflow: "hidden",
   },
-  option: { paddingHorizontal: 20, paddingVertical: 8, overflow: "hidden" },
+  option: { 
+    paddingHorizontal: 20, 
+    paddingVertical: 8, 
+    overflow: "hidden", 
+    // borderBottomWidth: 1,
+    // borderColor: "#d3d3d3" 
+  },
   disabledoption: {
     paddingHorizontal: 20,
     paddingVertical: 8,
@@ -339,5 +329,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "whitesmoke",
     opacity: 0.9,
+    // borderBottomWidth: 1,
+    // borderColor: "#d3d3d3"
   },
 });

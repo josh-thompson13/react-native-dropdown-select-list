@@ -107,12 +107,12 @@ const SelectList: React.FC<SelectListProps> = ({
       // oldOption.current != null
       oldOption.current = defaultOption.key;
       // setSelected(defaultOption.key);
-      setSelectedVal(defaultOption.label);
+      setSelectedVal(defaultOption.label ?? defaultOption.value);
     }
     if (defaultOption && _firstRender && defaultOption.key != undefined) {
       oldOption.current = defaultOption.key;
       // setSelected(defaultOption.key);
-      setSelectedVal(defaultOption.label);
+      setSelectedVal(defaultOption.label ?? defaultOption.value);
     }
   }, [defaultOption]);
 
@@ -216,7 +216,7 @@ const SelectList: React.FC<SelectListProps> = ({
             {filtereddata.length >= 1 ? (
               filtereddata.map((item: L1Keys) => {
                 let key = item.key ?? item.value ?? item;
-                let label = item.label ?? "";
+                let label = item.label ?? item.value ?? "";
                 let value = item.value ?? "";
                   return (
                     <View key={item.key} style={{ flexDirection: "row", borderColor: "#d3d3d3", borderBottomWidth:1 }}>
@@ -235,7 +235,7 @@ const SelectList: React.FC<SelectListProps> = ({
                             setSelected(key);
                           }
                           setIndexOfSelected(item.key);
-                          setSelectedVal(label);
+                          setSelectedVal(label ?? value);
                           slideup();
                           setTimeout(() => {
                             setFilteredData(data);
@@ -243,7 +243,7 @@ const SelectList: React.FC<SelectListProps> = ({
                         }}
                       >
                         <Text style={[{ fontFamily }, dropdownTextStyles]} numberOfLines={1} >
-                          {label}
+                          {label ?? value}
                         </Text>
                       </TouchableOpacity>
                       {indexOfSelected === item.key   ? (

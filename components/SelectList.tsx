@@ -39,7 +39,7 @@ const SelectList: React.FC<SelectListProps> = ({
   dropdownShown = false,
   fontFamily,
   editable,
-  parentCodeValue
+  parentCodeValue,
 }) => {
   const oldOption = React.useRef(null);
   const [_firstRender, _setFirstRender] = React.useState<boolean>(true);
@@ -127,7 +127,7 @@ const SelectList: React.FC<SelectListProps> = ({
     <View>
       {dropdown && search ? (
         <View style={[styles.wrapper, boxStyles, { overflow: "hidden" }]}>
-          <HStack style={{ flexGrow: 1, alignItems: "center" }}>
+          <HStack style={{ flex:1, alignItems: "center" }}>
             {!searchicon ? (
               <Image
                 source={require("../assets/images/search.png")}
